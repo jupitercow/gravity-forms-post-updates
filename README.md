@@ -6,19 +6,6 @@ http://wordpress.org/plugins/gravity-forms-post-updates/
 
 * * *
 
-This started as an update to the [Gravity Forms Update Post](http://wordpress.org/extend/plugins/gravity-forms-update-post/developers/) plugin developed by [p51labs](http://www.p51labs.com/) here.
-
-It has evolved into a completely rewritten plugin that streamlines the system, adds some new support for more fields, and adds more interfaces and filters.
-
-## Compatibility
-
-Here is how it does NOT really support the original version:
-
-* All of the delete functionality has been removed. It didn't have anything to do with Gravity Forms, so I thought it should be in a separate plugin or users can manually add it. It seemed like it complicated things in a way that distracted from the main function of the plugin. And I wasn't getting a lot of feedback that users were using it.
-* You can NOT just send a URL get variable and have a form populate with existing content and be editable. I wanted another layer to that. So you have to include a nonce as well, however, there is a built in function for creating edit links to make up for that.
-
-So it isn't very compatible. Plain and simple, you will have to change something to start using this plugin if you were using the original, but I don't think it will be very hard and I did keep the original query variable that was used before.
-
 ## Installation
 
 This add-on can be treated as both a WP plugin and a theme include.
