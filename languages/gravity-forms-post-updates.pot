@@ -1,0 +1,46 @@
+# Copyright (C) 2014 
+# This file is distributed under the same license as the  package.
+msgid ""
+msgstr ""
+"Project-Id-Version:  \n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/gravity-forms-post-updates\n"
+"POT-Creation-Date: 2014-05-17 21:14:47+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: gravityforms-update-post.php:276
+msgid ""
+"<strong>%s</strong> requires Gravity Forms to be installed. Please <a href="
+"\"http://www.gravityforms.com/\">download the latest version</a> to use this "
+"plugin."
+msgstr ""
+
+#: gravityforms-update-post.php:438
+msgid "Edit Post"
+msgstr ""
+
+#: gravityforms-update-post.php:614 gravityforms-update-post.php:710
+msgid "delete_requires_javascript"
+msgstr ""
+
+#: gravityforms-update-post.php:614 gravityforms-update-post.php:710
+msgid "Delete Upload"
+msgstr ""
+
+#: gravityforms-update-post.php:615 gravityforms-update-post.php:711
+msgid "Delete"
+msgstr ""
+
+#: gravityforms-update-post.php:1081
+msgid "Unique Custom Field?"
+msgstr ""
+
+#: gravityforms-update-post.php:1146
+msgid ""
+"<h6>Unique Meta Field</h6>Check this box to ensure this meta field is saved "
+"as unique."
+msgstr ""
