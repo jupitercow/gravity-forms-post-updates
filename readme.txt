@@ -3,7 +3,7 @@ Contributors: jcow
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=jacobsnyder%40gmail%2ecom&lc=US&item_name=Jacob%20Snyder&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted
 Tags: gravity forms, update posts, frontend, front end
 Requires at least: 3.6.1
-Tested up to: 4.0
+Tested up to: 4.1.1
 Stable tag: 1.2.16
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -11,6 +11,8 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Allows you to use Gravity Forms to update any post on the front end.
 
 == Description ==
+
+Requires PHP 5.2.
 
 Allows you to use Gravity Forms to update any post on the front end. If you use the "Gravity Forms + Custom Post Types", you can even update custom post types and use custom taxonomies.
 
