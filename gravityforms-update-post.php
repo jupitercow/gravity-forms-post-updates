@@ -3,7 +3,7 @@
 Plugin Name: Gravity Forms: Post Updates
 Plugin URI: https://wordpress.org/plugins/gravity-forms-post-updates/
 Description: Allow Gravity Forms to update post Content and the meta data associated with it. Based off the original version by Kevin Miller, this version removed delete functionality, fixed a few bugs, and adds support for file uploads.
-Version: 1.2.14
+Version: 1.2.16
 Author: Jake Snyder
 Author URI: http://Jupitercow.com/
 Contributer: p51labs
@@ -47,7 +47,7 @@ class gform_update_post
 	 * @since 	1.2
 	 * @var 	string
 	 */
-	const VERSION = '1.2.14';
+	const VERSION = '1.2.16';
 
 	/**
 	 * Settings
@@ -302,7 +302,7 @@ class gform_update_post
 	public static function scripts_and_styles()
 	{
 		// register acf scripts
-		wp_register_script( self::PREFIX, self::$settings['dir'] . 'js/scripts.js', array('jquery'), self::VERSION );
+		wp_register_script( self::PREFIX, plugins_url( 'js/scripts.js', __FILE__ ), array('jquery'), self::VERSION );
 		$args = array(
 			'url'                  => admin_url( 'admin-ajax.php' ),
 			'action'               => self::PREFIX . '_delete_upload',
@@ -517,8 +517,10 @@ class gform_update_post
 	 */
 	public static function setup_form( $args=array() )
 	{
-		if ( is_numeric($args) ) {
+		if ( is_numeric($args) )
+		{
 			$post_id = $args;
+			$form_id = false;
 		}
 		elseif ( is_array($args) )
 		{
@@ -529,7 +531,8 @@ class gform_update_post
 			$args = wp_parse_args( $args, $defaults );
 			extract($args);
 		}
-		else {
+		else
+		{
 			return false;
 		}
 
@@ -739,6 +742,7 @@ class gform_update_post
 		// If this is an image, set up and create a thumbnail
 		if ( 'image/' == substr($mime, 0, 6) )
 		{
+			$image_url = '';
 			if ( apply_filters(self::PREFIX . '/image/resize', true) )
 			{
 				// Get settings for image thumb
@@ -751,43 +755,47 @@ class gform_update_post
 				$baseurl	= GFFormsModel::get_upload_url($form_id);
 				$filename   = str_replace($baseurl, $basedir, $file);
 
-				// Make sure the server supports resize and save
-				$img_editor_test = wp_image_editor_supports( array(
-				    'methods' => array(
-				        'resize',
-				        'save'
-				    )
-				) );
-				if ( true === $img_editor_test && is_writable($basedir) )
+				if ( is_file($filename) )
 				{
-					// Get the image editor
-					$image_editor = wp_get_image_editor( $filename );
-					if (! is_wp_error($image_editor) )
+					// Make sure the server supports resize and save
+					$img_editor_test = wp_image_editor_supports( array(
+					    'methods' => array(
+					        'resize',
+					        'save'
+					    )
+					) );
+					if ( true === $img_editor_test && is_writable($basedir) )
 					{
-						// Create thumbnail filename
-						$thumbname = $image_editor->generate_filename( 'thumb' );
-						// Test if thumbnail exists
-						$thumb_exists = file_exists($thumbname);
-						if ( $thumb_exists ) $thumbsize = getimagesize( $thumbname );
+						// Get the image editor
+						$image_editor = wp_get_image_editor( $filename );
+						if (! is_wp_error($image_editor) )
+						{
+							// Create thumbnail filename
+							$thumbname = $image_editor->generate_filename( 'thumb' );
+							// Test if thumbnail exists
+							$thumb_exists = file_exists($thumbname);
+							if ( $thumb_exists ) $thumbsize = getimagesize( $thumbname );
 
-						// If no thumbnail, or the size has changed, generate a new one
-						if (! $thumb_exists || $thumbsize[0] != $width || $thumbsize[1] != $height )
-						{
-							$image_editor->resize( $width, $height, $crop );
-							$resized = $image_editor->save($thumbname);
-							if (! is_wp_error($resized) )
+							// If no thumbnail, or the size has changed, generate a new one
+							if (! $thumb_exists || $thumbsize[0] != $width || $thumbsize[1] != $height )
 							{
-								$pathinfo  = pathinfo($file);
-								$image_url = $pathinfo['dirname'] . '/' . $resized['file'];
+								$image_editor->resize( $width, $height, $crop );
+								$resized = $image_editor->save($thumbname);
+								if (! is_wp_error($resized) )
+								{
+									$pathinfo  = pathinfo($file);
+									$image_url = $pathinfo['dirname'] . '/' . $resized['file'];
+								}
 							}
-						}
-						// Otherwise use the existing file
-						else
-						{
-							$image_url = str_replace($basedir, $baseurl, $thumbname);
+							// Otherwise use the existing file
+							else
+							{
+								$image_url = str_replace($basedir, $baseurl, $thumbname);
+							}
 						}
 					}
 				}
+
 			}
 
 			// If there is no thumbnail at this point, use the file itself
@@ -977,9 +985,9 @@ class gform_update_post
 
 				$value = (! is_array($value) ) ? array($value) : $value;
 
-				if ( isset($field['choices']) )
+				if ( isset($field->choices) )
 				{
-					foreach ( $field['choices'] as &$choice )
+					foreach ( $field->choices as &$choice )
 					{
 						$choice['isSelected'] = ( in_array($choice['value'], $value) ) ? true : '';
 					}
@@ -1183,7 +1191,7 @@ class gform_update_post
 	 * @type	action
 	 * @return	void
 	 */
-	public function gform_field_standard_settings( $position, $form_id )
+	public static function gform_field_standard_settings( $position, $form_id )
 	{
 		if ( 700 == $position ) :
 		?>
@@ -1210,7 +1218,7 @@ class gform_update_post
 	 * @type	action
 	 * @return	void
 	 */
-	public function gform_editor_js()
+	public static function gform_editor_js()
 	{
 		?>
 		<script type="text/javascript">
@@ -1252,7 +1260,7 @@ class gform_update_post
 	 * @type	filter
 	 * @return	void
 	 */
-	public function gform_tooltips($tooltips)
+	public static function gform_tooltips($tooltips)
 	{
 		$tooltips['form_' . self::$settings['unique_field']] = __("<h6>Unique Meta Field</h6>Check this box to ensure this meta field is saved as unique.", self::PREFIX);
 		return $tooltips;

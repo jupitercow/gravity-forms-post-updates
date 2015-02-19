@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=jacob
 Tags: gravity forms, update posts, frontend, front end
 Requires at least: 3.6.1
 Tested up to: 4.0
-Stable tag: 1.2.14
+Stable tag: 1.2.16
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -131,6 +131,15 @@ Image fields are only supported if they are the "Featured Image". Otherwise you 
 1. A form on the front end. This just demonstrates the image/file capabilities.
 
 == Changelog ==
+
+## 1.2.16 - 2015-02-18
+
+- Fixed a few non-static function declarations.
+- Updated image upload to hopefully shutdown when the image is moved.
+
+## 1.2.15 - 2015-02-18
+
+- Fixed field treatment to object from array for GF 1.9.x.
 
 ## 1.2.14 - 2015-02-18
 
