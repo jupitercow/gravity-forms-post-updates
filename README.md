@@ -15,16 +15,7 @@ This add-on can be treated as both a WP plugin and a theme include.
 1. Copy the folder into your plugins folder
 2. Activate the plugin via the Plugins admin page
 
-### Include within theme
-
-1.	Copy the folder into your theme folder (can use sub folders). You can place the folder anywhere inside the 'wp-content' directory
-2.	Edit your functions.php file and add the code below (Make sure the path is correct to include the gravityforms-update-post.php file)
-
-```php
-include_once('gravityforms-update-post/gravityforms-update-post.php');
-```
-
-## New Features
+## Features
 
 * Supports custom field file uploading and deletion with thumbnails or mime type icons for existing items.
 * Fixed a bugs on multi selects and checkboxes.
