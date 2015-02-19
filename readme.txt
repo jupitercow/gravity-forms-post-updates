@@ -14,10 +14,6 @@ Allows you to use Gravity Forms to update any post on the front end.
 
 Allows you to use Gravity Forms to update any post on the front end. If you use the "Gravity Forms + Custom Post Types", you can even update custom post types and use custom taxonomies.
 
-Also hosted on bitbucket: https://bitbucket.org/jupitercow/gravity-forms-update-post
-
-If you have a bug or feature request, submit it there: https://bitbucket.org/jupitercow/gravity-forms-update-post/issues?status=new&status=open
-
 This started as an update to the Gravity Forms Update Post plugin developed by p51labs here.
 It has evolved into a completely rewritten plugin that streamlines the system, adds some new support for more fields, and adds more interfaces and filters.
 
