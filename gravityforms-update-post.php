@@ -3,7 +3,7 @@
 Plugin Name: Gravity Forms: Post Updates
 Plugin URI: https://wordpress.org/plugins/gravity-forms-post-updates/
 Description: Allow Gravity Forms to update post Content and the meta data associated with it. Based off the original version by Kevin Miller, this version removed delete functionality, fixed a few bugs, and adds support for file uploads.
-Version: 1.2.16
+Version: 1.2.17
 Author: Jake Snyder
 Author URI: http://Jupitercow.com/
 Contributer: p51labs
@@ -47,7 +47,7 @@ class gform_update_post
 	 * @since 	1.2
 	 * @var 	string
 	 */
-	const VERSION = '1.2.16';
+	const VERSION = '1.2.17';
 
 	/**
 	 * Settings
@@ -116,19 +116,22 @@ class gform_update_post
 	 */
 	public static function gf_shortcode_atts( $out, $pairs, $atts )
 	{
-		if ( isset($atts['update']) && is_numeric($atts['update']) )
+		if ( isset($atts['update']) )
 		{
-			do_action( self::PREFIX . '/setup_form', array('form_id'=>$atts['id'], 'post_id'=>$atts['update']) );
+			if ( is_numeric($atts['update']) )
+			{
+				do_action( self::PREFIX . '/setup_form', array('form_id'=>$atts['id'], 'post_id'=>$atts['update']) );
+			}
+			elseif ( 'false' == $atts['update'] )
+			{
+				remove_filter( 'gform_form_tag', array(__CLASS__, 'gform_form_tag') );
+				remove_filter( 'gform_pre_render_' . $atts['id'], array(__CLASS__, 'gform_pre_render') );
+				remove_filter( 'gform_pre_render', array(__CLASS__, 'gform_pre_render') );
+			}
 		}
 		elseif ( in_array('update', $atts) )
 		{
 			do_action( self::PREFIX . '/setup_form', array('form_id'=>$atts['id']) );
-		}
-		else
-		{
-			remove_filter( 'gform_form_tag', array(__CLASS__, 'gform_form_tag'), 50 );
-			remove_filter( 'gform_pre_render_' . $atts['id'], array(__CLASS__, 'gform_pre_render') );
-			remove_filter( 'gform_pre_render', array(__CLASS__, 'gform_pre_render') );
 		}
 
 		return $out;
@@ -957,6 +960,16 @@ class gform_update_post
 
 				self::$settings['tax_value'][$field['inputName']] = $value;
 				add_filter( 'gform_field_value_' . $field['inputName'], array(__CLASS__, 'return_taxonomy_field_value') , 10, 2 );
+
+				$value = (! is_array($value) ) ? array($value) : $value;
+
+				if ( isset($field->choices) )
+				{
+					foreach ( $field->choices as &$choice )
+					{
+						$choice['isSelected'] = ( in_array($choice['value'], $value) ) ? true : '';
+					}
+				}
 				#add_filter( 'gform_field_value_' . $field['inputName'], function($value) use($value) { return $value; } );
 				break;
 
