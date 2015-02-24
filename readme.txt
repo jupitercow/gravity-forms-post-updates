@@ -4,40 +4,29 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=jacob
 Tags: gravity forms, update posts, frontend, front end
 Requires at least: 3.6.1
 Tested up to: 4.1.1
-Stable tag: 1.2.16
+Stable tag: 1.2.17
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Allows you to use Gravity Forms to update any post on the front end.
 
+
 == Description ==
 
-Requires PHP 5.2.
+**Requires PHP 5.3 or greater**
 
 Allows you to use Gravity Forms to update any post on the front end. If you use the "Gravity Forms + Custom Post Types", you can even update custom post types and use custom taxonomies.
 
-This started as an update to the Gravity Forms Update Post plugin developed by p51labs here.
-It has evolved into a completely rewritten plugin that streamlines the system, adds some new support for more fields, and adds more interfaces and filters.
+= Features =
 
-= Compatibility =
-
-Here is how it does NOT really support the original version:
-
-*   All of the delete functionality has been removed. It didn't have anything to do with Gravity Forms, so I thought it should be in a separate plugin or users can manually add it. It seemed like it complicated things in a way that distracted from the main function of the plugin. And I wasn't getting a lot of feedback that users were using it.
-*   You can NOT just send a URL get variable and have a form populate with existing content and be editable. I wanted another layer to that. So you have to include a nonce as well, however, there is a built in function for creating edit links to make up for that.
-
-So it isn't very compatible. Plain and simple, you will have to change something to start using this plugin if you were using the original, but I don't think it will be very hard and I did keep the original query variable that was used before.
-
-= New Features =
-
-*   Supports custom field file uploading and deletion with thumbnails or mime type icons for existing items.
-*   Fixed a bugs on multi selects and checkboxes.
-*   Fixed bug on Categories.
-*   Completely removed the ability to delete posts.
-*   There are some filters to customize things now.
-*   Adds non-query-var template method to setup a form.
-*   Adds a really basic shortcode to setup a form (UPDATE: This is still supported, but it is better to use the addition, below, to the gravityform shortcode).
-*   Adds an additional attribute to the gravityform shortcode: "update"
+* Supports custom field file uploading and deletion with thumbnails or mime type icons for existing items.
+* Fixed a bugs on multi selects and checkboxes.
+* Fixed bug on Categories.
+* Completely removed the ability to delete posts.
+* There are some filters to customize things now.
+* Adds non-query-var template method to setup a form.
+* Adds a really basic shortcode to setup a form (UPDATE: This is still supported, but it is better to use the addition, below, to the gravityform shortcode).
+* Adds an additional attribute to the gravityform shortcode: "update"
 
 = SHORTCODE =
 
@@ -101,18 +90,9 @@ You can use the action to force a form show a specific post:
 
 == Installation ==
 
-This add-on can be treated as both a WP plugin and a theme include.
+* Install plugin either via the WordPress.org plugin directory, or by uploading the files to your server.
+* Activate the plugin via the Plugins admin page.
 
-= Install as Plugin =
-
-*   Copy the folder into your plugins folder
-*   Activate the plugin via the Plugins admin page
-
-= Include within theme =
-
-*   Copy the folder into your theme folder (can use sub folders). You can place the folder anywhere inside the 'wp-content' directory
-*   Edit your functions.php file and add the code below (Make sure the path is correct to include the gravityforms-update-post.php file)
-*   `include_once('gravityforms-update-post/gravityforms-update-post.php');`
 
 == Frequently Asked Questions ==
 
@@ -124,9 +104,15 @@ Tags really only work with a single line text field, checkbox and multiselect cu
 
 Image fields are only supported if they are the "Featured Image". Otherwise you have to use a Custom Field and choose "File Upload" under File Type. If it is not one of these two types, we can't track it for updating.
 
+= What does this error mean: syntax error, unexpected T_FUNCTION?! =
+
+It usually means you are running PHP 5.2.x on your server. I know WordPress supports 5.2.4, but it is highly recommended to run at least 5.4, and this plugin simply doesn't support older than 5.3. We tried a little bit, but we could not get anonymous functions to work in a format that was compatible with 5.2, and, honestly, we really don't want to spend a lot more time on it, because 5.2 is so old, and you should upgrade. We did try though...
+
+
 == Screenshots ==
 
 1. A form on the front end. This just demonstrates the image/file capabilities.
+
 
 == Changelog ==
 
@@ -273,6 +259,7 @@ Image fields are only supported if they are the "Featured Image". Otherwise you 
 ## 0.6.1 - 2013-09-19
 
 - Removed error output from unlink when a file doesn't exist. Stopped the default thumbnail on post images, so post image thumbs only show up when there is an actual image.
+
 
 == Upgrade Notice ==
 

@@ -1,31 +1,24 @@
 <?php
-/*
-Plugin Name: Gravity Forms: Post Updates
-Plugin URI: https://wordpress.org/plugins/gravity-forms-post-updates/
-Description: Allow Gravity Forms to update post Content and the meta data associated with it. Based off the original version by Kevin Miller, this version removed delete functionality, fixed a few bugs, and adds support for file uploads.
-Version: 1.2.17
-Author: Jake Snyder
-Author URI: http://Jupitercow.com/
-Contributer: p51labs
-Contributer URI: http://p51labs.com/
-
-------------------------------------------------------------------------
-Copyright 2014 Jupitercow, Inc.
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-*/
+/**
+ * @link              https://github.com/jupitercow/gravity-forms-post-updates
+ * @since             1.2.17
+ * @package           gform_update_post
+ *
+ * @wordpress-plugin
+ * Plugin Name:       Gravity Forms: Post Updates
+ * Plugin URI:        https://wordpress.org/plugins/gravity-forms-post-updates/
+ * Description:       Allow Gravity Forms to update post content and the meta data associated with a post.
+ * Version:           1.2.17
+ * Author:            jcow
+ * Author URI:        http://jcow.com/
+ * Contributer:       ekaj
+ * Contributer:       jr00ck
+ * Contributer:       p51labs
+ * License:           GPL-2.0+
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * Text Domain:       gform_update_post
+ * Domain Path:       /languages
+ */
 
 if (! class_exists('gform_update_post') ) :
 
@@ -78,25 +71,24 @@ class gform_update_post
 	 *
 	 * Add filters and actions and set up the options.
 	 *
-	 * @author  Jake Snyder
-	 * @date	22/08/13
+	 * @author  ekaj
 	 */
 	public static function init()
 	{
 		self::setup();
 
 		// actions
-		add_action( 'admin_init',                  array(__CLASS__, 'admin_init') );
+		add_action( 'admin_init',                                 array(__CLASS__, 'admin_init') );
 
 		// filters
-		add_filter( 'shortcode_atts_gravityforms', array(__CLASS__, 'gf_shortcode_atts'), 10, 3 );
+		add_filter( 'shortcode_atts_gravityforms',                array(__CLASS__, 'gf_shortcode_atts'), 10, 3 );
 	}
 
 	/**
 	 * Admin init
 	 *
-	 * @author  Jake Snyder
-	 * @date	1.2
+	 * @author  ekaj
+	 * @since	1.2
 	 */
 	public static function admin_init()
 	{
@@ -111,7 +103,8 @@ class gform_update_post
 	/**
 	 * Add support for the new update attribute in the shortcode
 	 *
-	 * @author  Jake Snyder
+	 * @author  ekaj
+	 * @author  jr00ck
 	 * @since	1.2
 	 */
 	public static function gf_shortcode_atts( $out, $pairs, $atts )
@@ -142,8 +135,7 @@ class gform_update_post
 	 *
 	 * Set up options and check if a URL variable is sent.
 	 *
-	 * @author  Jake Snyder
-	 * @date	22/08/13
+	 * @author  ekaj
 	 */
 	public static function setup()
 	{
@@ -258,8 +250,7 @@ class gform_update_post
 	/**
 	 * Just returns the request_id
 	 *
-	 * @author  Jake Snyder
-	 * @date	12/09/13
+	 * @author  ekaj
 	 */
 	public static function request_id()
 	{
@@ -269,8 +260,7 @@ class gform_update_post
 	/**
 	 * Make sure that any neccessary dependancies exist
 	 *
-	 * @author  Jake Snyder
-	 * @date	12/09/13
+	 * @author  ekaj
 	 * @return	bool
 	 */
 	public static function test_requirements()
@@ -279,6 +269,8 @@ class gform_update_post
 		if (! class_exists('RGForms') )      return false;
 		// Make sure the Form Model is there also
 		if (! class_exists('GFFormsModel') ) return false;
+		// Look for the GFCommon object
+		if (! class_exists('GFCommon') )     return false;
 
 		return true;
 	}
@@ -286,8 +278,7 @@ class gform_update_post
 	/**
 	 * If Gravity Forms isn't installed, add an error to let user know this won't be useable.
 	 *
-	 * @author  Jake Snyder
-	 * @date	12/08/13
+	 * @author  ekaj
 	 * @return	void
 	 */
     public static function admin_warnings()
@@ -324,8 +315,7 @@ class gform_update_post
 	 *
 	 * Check if a url variable has been submitted correctly, and then trigger.
 	 *
-	 * @author  Jake Snyder
-	 * @date	22/08/13
+	 * @author  ekaj
 	 * @return	void	
 	 */
 	public static function process_request()
@@ -349,9 +339,8 @@ class gform_update_post
 	 *
 	 * Used to get the post from id along with taxonomies.
 	 *
-	 * @author  Kevin Miller
-	 * @author  Jake Snyder
-	 * @date	22/08/13]
+	 * @author  p51labs
+	 * @author  ekaj
 	 * @param	int $post_id
 	 * @return	void
 	 */
@@ -367,7 +356,7 @@ class gform_update_post
 	/**
 	 * Add taxonomies to post object
 	 *
-	 * @author  Jake Snyder
+	 * @author  ekaj
 	 * @return	void
 	 */
 	public static function get_post_taxonomies()
@@ -389,8 +378,7 @@ class gform_update_post
 	 *
 	 * Create a url with GET variables to the form for editing.
 	 *
-	 * @author  Jake Snyder
-	 * @date	22/08/13
+	 * @author  ekaj
 	 * @param	int		$post_id ID of the post you want to edit
 	 * @param	string	$url By default the permalink of the post that you want to edit is used, use this to send to a different page to edit the post whose id is provided
 	 * @return	void
@@ -419,7 +407,7 @@ class gform_update_post
 	 *	test (string) is the link text
 	 *	title (string) is the title attribute of the anchor tag
 	 *
-	 * @author  Jake Snyder
+	 * @author  ekaj
 	 * @since   1.2.7
 	 * @param	array|string $args The arguments to use when creating a link
 	 * @return	void
@@ -461,8 +449,7 @@ class gform_update_post
 	 *	test (string) is the link text
 	 *	title (string) is the title attribute of the anchor tag
 	 *
-	 * @author  Jake Snyder
-	 * @date	12/09/13
+	 * @author  ekaj
 	 * @param	array|string $args The arguments to use when creating a link
 	 * @return	void
 	 */
@@ -474,7 +461,7 @@ class gform_update_post
 	/**
 	 * Create a link to edit a post
 	 *
-	 * @author  Jake Snyder
+	 * @author  ekaj
 	 * @since   1.2.6
 	 * @type	shortcode
 	 * @return	void	
@@ -494,8 +481,7 @@ class gform_update_post
 	 *
 	 * Set up a form on a post or page to be editable.
 	 *
-	 * @author  Jake Snyder
-	 * @date	12/09/13]
+	 * @author  ekaj
 	 * @type	shortcode
 	 * @return	void	
 	 */
@@ -513,8 +499,7 @@ class gform_update_post
 	 *
 	 * Sets up a form from post id for editing.
 	 *
-	 * @author  Jake Snyder
-	 * @date	22/08/13
+	 * @author  ekaj
 	 * @param	int		$post_id id of the post you want to edit
 	 * @return	void
 	 */
@@ -576,8 +561,7 @@ class gform_update_post
 	/**
 	 * AJAX Delete Upload Wrapper
 	 *
-	 * @author  Jake Snyder
-	 * @date	22/08/13
+	 * @author  ekaj
 	 * @return	void
 	 */
 	public static function ajax_delete_upload()
@@ -622,8 +606,7 @@ class gform_update_post
 	/**
 	 * Delete Upload
 	 *
-	 * @author  Jake Snyder
-	 * @date	22/08/13
+	 * @author  ekaj
 	 * @return	void
 	 */
 	public static function delete_upload( $options )
@@ -665,8 +648,7 @@ class gform_update_post
 	 *
 	 * Add the existing file to file field in form.
 	 *
-	 * @author  Jake Snyder
-	 * @date	22/08/13
+	 * @author  ekaj
 	 * @type	filter
 	 */
 	public static function gform_field_content( $content, $field, $value, $lead_id, $form_id )
@@ -729,8 +711,7 @@ class gform_update_post
 	/**
 	 * Create an upload.
 	 *
-	 * @author  Jake Snyder
-	 * @since	1.2.9
+	 * @author  ekaj
 	 * @return	void
 	 */
 	public static function create_uploaded_file( $file, $field, $form_id )
@@ -838,9 +819,8 @@ class gform_update_post
 	 *
 	 * This field will trigger the post data updates when their isn't a GET variable.
 	 *
-	 * @author  Kevin Miller
-	 * @author  Jake Snyder
-	 * @date	22/08/13
+	 * @author  p51labs
+	 * @author  ekaj
 	 * @type	filter
 	 */
 	public static function gform_form_tag( $form_tag, $form )
@@ -854,8 +834,7 @@ class gform_update_post
 	 *
 	 * Add any exisiting info to the form fields from our edit post.
 	 *
-	 * @author  Kevin Miller
-	 * @date	22/08/13
+	 * @author  p51labs
 	 * @type	filter
 	 */
 	public static function gform_pre_render( $form )
@@ -930,8 +909,8 @@ class gform_update_post
 	 *
 	 * Populate specific form fields based on type.
 	 *
-	 * @author  Kevin Miller
-	 * @author  Jake Snyder
+	 * @author  p51labs
+	 * @author  ekaj
 	 * @param	array	$field
 	 * @param	string	$field_type
 	 * @param	mixed	$value
@@ -963,13 +942,25 @@ class gform_update_post
 
 				$value = (! is_array($value) ) ? array($value) : $value;
 
-				if ( isset($field->choices) )
+				if ( version_compare(GFCommon::$version, '1.9') >= 0 )
 				{
-					foreach ( $field->choices as &$choice )
+					if ( isset($field->choices) )
 					{
-						$choice['isSelected'] = ( in_array($choice['value'], $value) ) ? true : '';
+						foreach ( $field->choices as &$choice ) {
+							$choice['isSelected'] = ( in_array($choice['value'], $value) ) ? true : '';
+						}
 					}
 				}
+				else
+				{
+					if ( isset($field['choices']) )
+					{
+						foreach ( $field['choices'] as &$choice ) {
+							$choice['isSelected'] = ( in_array($choice['value'], $value) ) ? true : '';
+						}
+					}
+				}
+
 				#add_filter( 'gform_field_value_' . $field['inputName'], function($value) use($value) { return $value; } );
 				break;
 
@@ -998,13 +989,25 @@ class gform_update_post
 
 				$value = (! is_array($value) ) ? array($value) : $value;
 
-				if ( isset($field->choices) )
+				if ( version_compare(GFCommon::$version, '1.9') >= 0 )
 				{
-					foreach ( $field->choices as &$choice )
+					if ( isset($field->choices) )
 					{
-						$choice['isSelected'] = ( in_array($choice['value'], $value) ) ? true : '';
+						foreach ( $field->choices as &$choice ) {
+							$choice['isSelected'] = ( in_array($choice['value'], $value) ) ? true : '';
+						}
 					}
 				}
+				else
+				{
+					if ( isset($field['choices']) )
+					{
+						foreach ( $field['choices'] as &$choice ) {
+							$choice['isSelected'] = ( in_array($choice['value'], $value) ) ? true : '';
+						}
+					}
+				}
+
 				break;
 
 			default:
@@ -1023,7 +1026,7 @@ class gform_update_post
 	/**
 	 * Return value for taxonomy fields
 	 *
-	 * @author  Jake Snyder
+	 * @author  ekaj
 	 * @return	value
 	 */
 	public static function return_category_field_value( $value, $field )
@@ -1040,7 +1043,7 @@ class gform_update_post
 	 *
 	 * While nice, custom post types plugin only adds taxonomies on intead of updating the whole set, so you can't ever remove them. This wipes them out and then they can be added through the custom post types plugin.
 	 *
-	 * @author  Jake Snyder
+	 * @author  ekaj
 	 * @return	void
 	 */
 	public static function delete_custom_taxonomy_save( $entry, $form )
@@ -1067,9 +1070,8 @@ class gform_update_post
 	 * Adds the support for unique custom fields which clean up the database. This does force a new post_meta entry every save though. 
 	 * This is forced because GF uses "add_post_meta" instead of "update_post_meta".
 	 *
-	 * @author  Kevin Miller
-	 * @author  Jake Snyder
-	 * @date	22/08/13
+	 * @author  p51labs
+	 * @author  ekaj
 	 * @type	action
 	 */
 	public static function gform_post_data( $post_data, $form )
@@ -1118,7 +1120,7 @@ class gform_update_post
 	/**
 	 * Test if an image already exists, for validation on required fields
 	 *
-	 * @author  Jake Snyder
+	 * @author  ekaj
 	 * @since	0.6.4
 	 * @return	void
 	 */
@@ -1140,8 +1142,7 @@ class gform_update_post
 	 *
 	 * Check permissions for current user that they are allowed to edit the post/page.
 	 *
-	 * @author  Jake Snyder
-	 * @date	22/08/13
+	 * @author  ekaj
 	 * @return	void
 	 */
 	public static function current_user_can( $post_id=false )
@@ -1199,8 +1200,8 @@ class gform_update_post
 	 *
 	 * This function adds the checkbox.
 	 *
-	 * @author  Kevin Miller
-	 * @author  Jake Snyder
+	 * @author  p51labs
+	 * @author  ekaj
 	 * @type	action
 	 * @return	void
 	 */
@@ -1226,8 +1227,8 @@ class gform_update_post
 	 *
 	 * Adds the js for the checkbox.
 	 *
-	 * @author  Kevin Miller
-	 * @author  Jake Snyder
+	 * @author  p51labs
+	 * @author  ekaj
 	 * @type	action
 	 * @return	void
 	 */
@@ -1268,8 +1269,8 @@ class gform_update_post
 	 *
 	 * This function adds the tooltip for the checkbox.
 	 *
-	 * @author  Kevin Miller
-	 * @author  Jake Snyder
+	 * @author  p51labs
+	 * @author  ekaj
 	 * @type	filter
 	 * @return	void
 	 */

@@ -6,14 +6,14 @@ http://wordpress.org/plugins/gravity-forms-post-updates/
 
 * * *
 
+-> **Requires PHP 5.3 or greater** <-
+
+* * *
+
 ## Installation
 
-This add-on can be treated as both a WP plugin and a theme include.
-
-### Install as Plugin
-
-1. Copy the folder into your plugins folder
-2. Activate the plugin via the Plugins admin page
+1. Install plugin either via the WordPress.org plugin directory, or by uploading the files to your server.
+2. Activate the plugin via the Plugins admin page.
 
 ## Features
 
