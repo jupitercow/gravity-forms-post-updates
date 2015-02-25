@@ -1,5 +1,5 @@
 === Plugin Name ===
-Contributors: jcow, ekaj, jr00k, p51labs
+Contributors: jcow, ekaj, jr00ck, p51labs
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=jacobsnyder%40gmail%2ecom&lc=US&item_name=Jacob%20Snyder&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted
 Tags: gravity forms, update posts, frontend, front end
 Requires at least: 3.6.1
