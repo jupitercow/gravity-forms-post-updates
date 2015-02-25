@@ -1,5 +1,5 @@
 === Plugin Name ===
-Contributors: jcow
+Contributors: jcow, ekaj, jr00k, p51labs
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=jacobsnyder%40gmail%2ecom&lc=US&item_name=Jacob%20Snyder&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted
 Tags: gravity forms, update posts, frontend, front end
 Requires at least: 3.6.1
@@ -115,6 +115,10 @@ It usually means you are running PHP 5.2.x on your server. I know WordPress supp
 
 
 == Changelog ==
+
+## 1.2.17 - 2015-02-24
+
+- Should wrap up 1.9 support and fix issues with custom post types. Helped along by jr00ck!
 
 ## 1.2.16 - 2015-02-18
 
