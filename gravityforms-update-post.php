@@ -1,14 +1,14 @@
 <?php
 /**
  * @link              https://github.com/jupitercow/gravity-forms-post-updates
- * @since             1.2.17
+ * @since             1.2.18
  * @package           gform_update_post
  *
  * @wordpress-plugin
  * Plugin Name:       Gravity Forms: Post Updates
  * Plugin URI:        https://wordpress.org/plugins/gravity-forms-post-updates/
  * Description:       Allow Gravity Forms to update post content and the meta data associated with a post.
- * Version:           1.2.17
+ * Version:           1.2.18
  * Author:            jcow
  * Author URI:        http://jcow.com/
  * Contributer:       ekaj
@@ -40,7 +40,7 @@ class gform_update_post
 	 * @since 	1.2
 	 * @var 	string
 	 */
-	const VERSION = '1.2.17';
+	const VERSION = '1.2.18';
 
 	/**
 	 * Settings
@@ -163,7 +163,7 @@ class gform_update_post
 			add_filter( 'gform_tooltips',                array(__CLASS__, 'gform_tooltips') );
 
 			// Custom post types plugin doesn't update taxonomies, it just adds to them, so you have to delete first
-			add_filter( 'gform_post_submission',         array(__CLASS__, 'delete_custom_taxonomy_save'), 1, 2 );
+			add_filter( 'gform_after_submission',         array(__CLASS__, 'delete_custom_taxonomy_save'), 1, 2 );
 
 			// Update validation for file/image upload
 			add_filter( 'gform_field_validation',        array(__CLASS__, 'required_upload_field_validation'), 10, 4 );
