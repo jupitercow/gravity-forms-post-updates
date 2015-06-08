@@ -116,16 +116,11 @@ class gform_update_post
 			$post_id = false;
 			$request_key = apply_filters(self::PREFIX . '/request_id', self::$settings['request_id']);
 			if (! empty($_REQUEST[$request_key]) ) {
-				$require_link = true;
 				$post_id = $_REQUEST[$request_key];
-			}
-			else
-			{
-				$require_link = false;
 			}
 		}
 
-		if (! $require_link )
+		if (! $require_link || ($require_link && $post_id) )
 		{
 			if ( isset($atts['update']) )
 			{
@@ -455,7 +450,7 @@ class gform_update_post
 	 * Arguments:
 	 *	post_id (int) is the id of the post you want to edit
 	 *	url (string|int) is either the full url of the page where your edit form resides, or an id for the page where the edit form resides
-	 *	test (string) is the link text
+	 *	text (string) is the link text
 	 *	title (string) is the title attribute of the anchor tag
 	 *
 	 * @author  ekaj
@@ -498,12 +493,6 @@ class gform_update_post
 	 * Build Edit Link
 	 *
 	 * Create anchor link with the edit URI. Uses self::edit_url to create the URI.
-	 *
-	 * Arguments:
-	 *	post_id (int) is the id of the post you want to edit
-	 *	url (string|int) is either the full url of the page where your edit form resides, or an id for the page where the edit form resides
-	 *	test (string) is the link text
-	 *	title (string) is the title attribute of the anchor tag
 	 *
 	 * @author  ekaj
 	 * @param	array|string $args The arguments to use when creating a link
