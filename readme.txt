@@ -116,6 +116,11 @@ It usually means you are running PHP 5.2.x on your server. I know WordPress supp
 
 == Changelog ==
 
+= 1.2.20 - 2015-06-07 =
+
+- Updated to hide update forms when user can't update.
+- Added "require_link" attribute to shortcode to require an edit link clicked on to show form.
+
 = 1.2.19 - 2015-06-07 =
 
 - When no title field is included, it no longer erases the title, same with content.

@@ -8,7 +8,7 @@
  * Plugin Name:       Gravity Forms: Post Updates
  * Plugin URI:        https://wordpress.org/plugins/gravity-forms-post-updates/
  * Description:       Allow Gravity Forms to update post content and the meta data associated with a post.
- * Version:           1.2.19
+ * Version:           1.2.20
  * Author:            Jupitercow
  * Author URI:        http://Jupitercow.com/
  * Contributer:       ekaj
@@ -40,7 +40,7 @@ class gform_update_post
 	 * @since 	1.2
 	 * @var 	string
 	 */
-	const VERSION = '1.2.18';
+	const VERSION = '1.2.20';
 
 	/**
 	 * Settings
@@ -78,10 +78,10 @@ class gform_update_post
 		self::setup();
 
 		// actions
-		add_action( 'admin_init',                                 array(__CLASS__, 'admin_init') );
+		add_action( 'admin_init',                    array(__CLASS__, 'admin_init') );
 
 		// filters
-		add_filter( 'shortcode_atts_gravityforms',                array(__CLASS__, 'gf_shortcode_atts'), 10, 3 );
+		add_filter( 'shortcode_atts_gravityforms',   array(__CLASS__, 'gf_shortcode_atts'), 10, 3 );
 	}
 
 	/**
@@ -109,24 +109,58 @@ class gform_update_post
 	 */
 	public static function gf_shortcode_atts( $out, $pairs, $atts )
 	{
-		if ( isset($atts['update']) )
+		$require_link = ( isset($atts['require_link']) || in_array('require_link', $atts) ) ? true : false;
+
+		if ( $require_link )
 		{
-			if ( is_numeric($atts['update']) )
-			{
-				do_action( self::PREFIX . '/setup_form', array('form_id'=>$atts['id'], 'post_id'=>$atts['update']) );
+			$post_id = false;
+			$request_key = apply_filters(self::PREFIX . '/request_id', self::$settings['request_id']);
+			if (! empty($_REQUEST[$request_key]) ) {
+				$require_link = true;
+				$post_id = $_REQUEST[$request_key];
 			}
-			elseif ( 'false' == $atts['update'] )
+			else
 			{
-				remove_filter( 'gform_form_tag', array(__CLASS__, 'gform_form_tag') );
-				remove_filter( 'gform_pre_render_' . $atts['id'], array(__CLASS__, 'gform_pre_render') );
-				remove_filter( 'gform_pre_render', array(__CLASS__, 'gform_pre_render') );
+				$require_link = false;
 			}
-		}
-		elseif ( in_array('update', $atts) )
-		{
-			do_action( self::PREFIX . '/setup_form', array('form_id'=>$atts['id']) );
 		}
 
+		if (! $require_link )
+		{
+			if ( isset($atts['update']) )
+			{
+				if ( is_numeric($atts['update']) )
+				{
+					if (! $post_id ) {
+						$post_id = $atts['update'];
+					}
+					if ( self::current_user_can( $post_id ) ) {
+						do_action( self::PREFIX . '/setup_form', array('form_id'=>$atts['id'], 'post_id'=>$post_id) );
+					}
+				}
+				elseif ( 'false' == $atts['update'] )
+				{
+					remove_filter( 'gform_form_tag', array(__CLASS__, 'gform_form_tag') );
+					remove_filter( 'gform_pre_render_' . $atts['id'], array(__CLASS__, 'gform_pre_render') );
+					remove_filter( 'gform_pre_render', array(__CLASS__, 'gform_pre_render') );
+				}
+			}
+			elseif ( in_array('update', $atts) )
+			{
+				// Get the current post id, if none is provided
+				if (! $post_id ) {
+					$post_id = (! empty($GLOBALS['post']->ID) ) ? $GLOBALS['post']->ID : false;
+				}
+
+				if ( self::current_user_can( $post_id ) ) {
+					do_action( self::PREFIX . '/setup_form', array('form_id'=>$atts['id'], 'post_id'=>$post_id) );
+				}
+			}
+		}
+
+		if ( (isset($atts['update']) || in_array('update', $atts)) && ! self::current_user_can($post_id) ) {
+			$out['action'] = 0;
+		}
 		return $out;
 	}
 
@@ -170,7 +204,6 @@ class gform_update_post
 
 			// Adds a really basic shortcode to set the plugin in action
 			add_shortcode( self::PREFIX,                 array(__CLASS__, 'shortcode') );
-
 
 			// Add an action to set up the form
 			add_action( self::PREFIX . '/setup_form',    array(__CLASS__, 'setup_form') );
@@ -448,7 +481,8 @@ class gform_update_post
 			$args['post_id'] = $GLOBALS['post']->ID;
 		}
 
-		if ( self::current_user_can( $args['post_id'] ) )
+		$request_key = apply_filters(self::PREFIX . '/request_id', self::$settings['request_id']);
+		if ( self::current_user_can( $args['post_id'] ) && empty($_REQUEST[$request_key]) )
 		{
 			// Add the link text to the title if no link title is specified
 			if (! $args['title'] ) {
