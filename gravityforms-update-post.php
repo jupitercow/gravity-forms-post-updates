@@ -8,7 +8,7 @@
  * Plugin Name:       Gravity Forms: Post Updates
  * Plugin URI:        https://wordpress.org/plugins/gravity-forms-post-updates/
  * Description:       Allow Gravity Forms to update post content and the meta data associated with a post.
- * Version:           1.2.20
+ * Version:           1.2.21
  * Author:            Jupitercow
  * Author URI:        http://Jupitercow.com/
  * Contributer:       ekaj
@@ -40,7 +40,7 @@ class gform_update_post
 	 * @since 	1.2
 	 * @var 	string
 	 */
-	const VERSION = '1.2.20';
+	const VERSION = '1.2.21';
 
 	/**
 	 * Settings
@@ -1071,7 +1071,13 @@ class gform_update_post
 	 */
 	public static function return_category_field_value( $value, $field )
 	{
-		return (! empty(self::$settings['cat_value']) ) ? self::$settings['cat_value'] : $value;
+		$result = (! empty(self::$settings['cat_value']) ) ? self::$settings['cat_value'] : $value;
+
+		if ( 'radio' == $field->inputType ) {
+			return $result[0];
+		} else {
+			return $result;
+		}
 	}
 	public static function return_taxonomy_field_value( $value, $field )
 	{
