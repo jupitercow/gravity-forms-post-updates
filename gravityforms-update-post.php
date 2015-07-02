@@ -8,7 +8,7 @@
  * Plugin Name:       Gravity Forms: Post Updates
  * Plugin URI:        https://wordpress.org/plugins/gravity-forms-post-updates/
  * Description:       Allow Gravity Forms to update post content and the meta data associated with a post.
- * Version:           1.2.22
+ * Version:           1.2.23
  * Author:            Jupitercow
  * Author URI:        http://Jupitercow.com/
  * Contributer:       ekaj
@@ -40,7 +40,7 @@ class gform_update_post
 	 * @since 	1.2
 	 * @var 	string
 	 */
-	const VERSION = '1.2.21';
+	const VERSION = '1.2.23';
 
 	/**
 	 * Settings
@@ -932,7 +932,7 @@ class gform_update_post
 				{
 					foreach ( $field['conditionalLogic']['rules'] as $rule )
 					{
-						if (! $form['conditional'] ) {
+						if ( empty($form['conditional']) ) {
 							$form['conditional'] = array();
 						}
 						$form['conditional'][] = $rule['fieldId'];
@@ -1237,7 +1237,7 @@ class gform_update_post
 			return false;
 		}
 
-		$capability = ( 'page' == $post_type ) ? 'edit_pages' : 'edit_posts';
+		$capability = ( 'page' == $post_type ) ? 'edit_page' : 'edit_post';
 
 		if ( current_user_can($capability, $post_id) ) {
 			return true;
