@@ -1181,7 +1181,7 @@ class gform_update_post
 	 */
 	public static function required_upload_field_validation( $result, $value, $form, $field )
 	{
-		if ( ('post_image' == $field['type'] || 'fileupload' == $field['inputType']) && $field['isRequired'] && ! $result['is_valid'] ) // || 'post_image' == $field['type']
+		if ( ! empty( self::$post->ID ) && ('post_image' == $field['type'] || 'fileupload' == $field['inputType']) && $field['isRequired'] && ! $result['is_valid'] ) // || 'post_image' == $field['type']
 		{
 			if ( ('post_image' == $field['type'] && has_post_thumbnail(self::$post->ID)) || ('fileupload' == $field['inputType'] && get_post_meta( self::$post->ID, $field['postCustomFieldName'], true )) ) {
 				$result['is_valid'] = true;
